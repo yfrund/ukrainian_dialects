@@ -1,4 +1,3 @@
-import re
 import json
 from extract_text_pdf import normalize
 from bs4 import BeautifulSoup
@@ -29,12 +28,12 @@ def clean_save():
                     except AttributeError as e:
                         print(f'Exception: {e}\n')
 
-def main_clean():
+def main():
     print('Start processing examples...')
     clean_save()
     print('Finished \u2713')
 
 
 if __name__ == '__main__':
-    main_clean()
+    main()
     

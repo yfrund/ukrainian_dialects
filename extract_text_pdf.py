@@ -29,9 +29,10 @@ oblasts = ("АР Крим",
            "Чернівецька", 
            "Чернігівська")
 
-
+                                
 def process_borshch(start_page, end_page, doc):
-
+    '''Processes texts about borshch.
+    Automatically assigns text chunks to correct dialects'''
     document = pymupdf.open(doc)
 
     text = ''
@@ -54,7 +55,7 @@ def process_borshch(start_page, end_page, doc):
                             
                                     if dialect:
 
-                                        with open(f'test\{dialect}.txt', 'a', encoding='utf-8') as f:
+                                        with open(f'dialect_text\{dialect}.txt', 'a', encoding='utf-8') as f:
 
                                             for sent in text.split('//'):
                                                 if sent.strip():
@@ -72,14 +73,11 @@ def process_borshch(start_page, end_page, doc):
             except TypeError as e:
 
                 print(f'Exception due to empty page: {e}')
-
-    with open(f'test\{dialect}.txt', 'a', encoding='utf-8') as f:
+    #save the last chunk
+    with open(f'dialect_text\{dialect}.txt', 'a', encoding='utf-8') as f:
         for sent in text.split('//'):
             if sent.strip():
                 f.write(sent.strip()+'\n')
-                                
-                            
-
 
 
         
@@ -246,6 +244,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-#TODO: fix data assigned to the wrong dialects!!! - Borshch - seems ok but check again
-#TODO: fix eu changed to 2 chars (see paper note)
