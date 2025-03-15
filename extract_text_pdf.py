@@ -56,9 +56,11 @@ def process_borshch(start_page, end_page, doc):
                                     if dialect:
 
                                         with open(f'dialect_text\{dialect}.txt', 'a', encoding='utf-8') as f:
+                                            
 
                                             for sent in text.split('//'):
                                                 if sent.strip():
+                                                    
                                                     f.write(sent.strip()+'\n')
 
                                     dialect = o
@@ -66,14 +68,17 @@ def process_borshch(start_page, end_page, doc):
 
                                     break
 
-                        elif 'italic' not in flags:
+                        elif 'italic' not in flags and 'superscript' not in flags and s['size'] != 9.0: #filtering out footnotes based on smaller size; superscript = diacritics that are also valid letters
+                            
 
                             text = text + normalize(s['text'])
 
             except TypeError as e:
 
-                print(f'Exception due to empty page: {e}')
+                #print(f'Exception due to empty page: {e}')
+                continue
     #save the last chunk
+  
     with open(f'dialect_text\{dialect}.txt', 'a', encoding='utf-8') as f:
         for sent in text.split('//'):
             if sent.strip():
@@ -145,6 +150,7 @@ def normalize(item):
         normalized = normalized.replace(' / ', ',')
         normalized = normalized.replace('\n', '')
         
+        
 
         #remove metadata in [] and (), including unbalanced brackets
         if any(char in normalized for char in '[]()'):
@@ -167,8 +173,8 @@ def normalize(item):
             #return ''
 
         except ValueError:
-        
-            return normalized
+            
+                return normalized
     
 def flags_decomposer(flags):
 
