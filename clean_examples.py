@@ -4,12 +4,18 @@ from bs4 import BeautifulSoup
 
 
 
-def clean_save():
+def clean_save(file: str, save: str):
+    '''
+    parse html to extract and save text
+    params:
+        file: path to file
+        save: folder to save, no / at the end
+    '''
     
-    with open('examples.json', 'r', encoding='utf-8') as f:
+    with open(file, 'r', encoding='utf-8') as f:
         data = json.load(f)
         for dialect in data:
-            with open(f'dialect_text/{dialect}.txt', 'a', encoding='utf-8') as f:
+            with open(f'{save}/{dialect}.txt', 'a', encoding='utf-8') as f:
 
                 for example in data[dialect]['examples']:
 
@@ -30,7 +36,7 @@ def clean_save():
 
 def main():
     print('Start processing examples...')
-    clean_save()
+    #clean_save()
     print('Finished \u2713')
 
 
