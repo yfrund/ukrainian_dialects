@@ -30,7 +30,7 @@ oblasts = ("АР Крим",
            "Чернігівська")
 
                                 
-def process_borshch(start_page, end_page, doc):
+def process_borshch(start_page: int, end_page: int, doc: str):
     '''Processes texts about borshch.
     Automatically assigns text chunks to correct dialects'''
     document = pymupdf.open(doc)
@@ -87,15 +87,13 @@ def process_borshch(start_page, end_page, doc):
 
         
 
-def process_text(start_page, end_page, dialect_name, doc):
+def process_text(start_page: int, end_page: int, dialect_name: str, doc: str):
     '''Processes all other texts.
     Assigns data to specified dialects'''
     document = pymupdf.open(doc)
 
     text = ''
    
-
-    #speaker_pattern = r'\w+\s+\w+(?:\w+)?, \d{4} '#to exclude text that gives information about speakers - each line contains: 'Last_name First_name Parental, XXXX', where XXXX = birth year
 
     for page_num in range(start_page, end_page):
 
@@ -112,13 +110,7 @@ def process_text(start_page, end_page, dialect_name, doc):
                             
 
                         try:
-                            #if 'italic' not in flags and 'bold' not in flags and s['size'] == 13.918607711791992 and 'інформант' not in s['text'].lower():
 
-                                #match = re.search(speaker_pattern, s['text'])
-                                
-                                
-                                #if not match:
-                                    #text = text + normalize(s['text'])
                             if 'bold' not in flags: #there is some relevant italicized text in speaker text, e.g. quotes from songs
                                 text = text + normalize(s['text'])
                             
@@ -126,7 +118,6 @@ def process_text(start_page, end_page, dialect_name, doc):
 
                         except TypeError: #skip empty pages
                             
-                            #print(f'exception: {e}')
                             continue
 
     with open(f'dialect_text\{dialect_name}.txt', 'a', encoding='utf-8') as f:
@@ -135,7 +126,10 @@ def process_text(start_page, end_page, dialect_name, doc):
                 f.write(sent.strip()+'\n')
                 
                     
-def normalize(item):
+def normalize(item: str):
+    '''
+    filters out punctuation, diacritics execpt for character й, page numbers and metadata stored in [] or () including unbalanced brackets
+    '''
 
     if isinstance(item, str):
         
@@ -174,7 +168,7 @@ def normalize(item):
 
         except ValueError:
             
-                return normalized
+            return normalized
     
 def flags_decomposer(flags):
 
@@ -205,8 +199,10 @@ def get_flags(item):
 
     return flags
 
-def keep_char(text):
-    '''keep the й'''
+def keep_char(text: str):
+    '''
+    keep the й
+    '''
     
     decomposed = unicodedata.normalize('NFKD', text)
 
@@ -231,20 +227,8 @@ def keep_char(text):
 def main():
     print(f'Starting the extraction...')
 
-    process_borshch(20, 308, 'G:\My Drive\Bachelor\Словники\Тексти\Borshсh.pdf')
-    print('Processed "Borshch" \u2713')
-
-    process_text(34, 121, 'Черкаська', 'G:\My Drive\Bachelor\Словники\Тексти\Hovirky_Cherkaschyny_zbirky_dialektnyh_tekstiv.pdf')
-    print('Processed Cherkasy region \u2713')
-
-    process_text(6, 304, 'Луганська', 'G:\My Drive\Bachelor\Словники\Тексти\Hovirky_Skhidnoi_Slobozhanschyny_zbirnyk_dialektnykh_tekstiv.pdf')
-    print('Processed Luhansk region \u2713')
-
-    process_text(24, 154, 'Полтавська', 'G:\My Drive\Bachelor\Словники\Тексти\Hovirky_Zahidnoi_Poltavschyny_zbirnyk_dialektnyh_tekstiv.pdf')
-    print('Processed Poltava region \u2713')
-
-    process_text(20, 339, 'Хмельницька', 'G:\My Drive\Bachelor\Словники\Тексти\Volynski-hovirky-Khmelnychchyny-zbirnyk-dialektnykh-tekstiv.pdf')
-    print('Processed Khmelnytsk region \u2713')
+    #process_borscht()
+    #process_text()
 
     print(f'Finished.')
 
