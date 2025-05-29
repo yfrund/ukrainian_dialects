@@ -42,3 +42,11 @@ The root directory contains scripts used for data processing, model evaluation, 
 - `find_label.py`: a naive script to infer true labels from filenames.
 
 - `generate_translations.py`: generates translations using selected LLMs.
+
+- `make_dataset_fasttext.py`: formats data for fastText; performs sampling for train and test sets.
+
+- `make_reference_file.py`: selects a roughly even number of data points from all models for every class; the output is intended for further manual correction.
+
+- `train_fasttext_language_id.py`: performs hyperparameter tuning and trains a fastText model based on micro F-score.
+
+- `train_fasttext_language_id_macrofscore.py`: performs hyperparameter tuning and trains a fastText model based on macro F-score.
